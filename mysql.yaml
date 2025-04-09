@@ -9,6 +9,6 @@
 
   - name: start and enable server
     ansible.builtin.service:
-      name: mysld
+      name: mysqld
       state: started
       enabled: yes
