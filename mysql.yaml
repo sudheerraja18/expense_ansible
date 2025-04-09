@@ -2,6 +2,13 @@
   hosts: web
   become: yes
   tasks:
+  - name: install python packages
+    ansible.builtin.pip:
+      name: "{{ item }}"
+      executable: 3.9
+    loop:
+    - PyMySQL
+
   - name: install mysql server
     ansible.builtin.package:
       name: mysql-server
@@ -22,4 +29,4 @@
 
   - name: print mysql connection info
     ansible.builtin.debug:
-      msg: "{{ mysql_info }}"
+      msg: "{{ mysl_info }}"
