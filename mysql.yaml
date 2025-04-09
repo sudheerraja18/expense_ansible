@@ -1,8 +1,10 @@
 - name: configure mysql server
   hosts: web
   become: yes
+  vars:
+    myql_root_password: ExpenseApp@1
   tasks:
-  - name: install python packages
+  - name: install MySql packages
     ansible.builtin.pip:
       name: "{{ item }}"
       executable: pip3.9
@@ -15,25 +17,25 @@
       name: mysql-server
       state: present
 
-  - name: start and enable server
+  - name: start and enable mysql server
     ansible.builtin.service:
       name: mysqld
       state: started
       enabled: yes
 
-  - name: connect mysql server
+  - name: connect to mysql server
     community.mysql.mysql_info:
       login_user: root
-      login_password: ExpenseApp@1
+      login_password: "{{ myql_root_password }}"
       login_host: db.harvargurram.online
     register: mysql_info
     ignore_errors: True
 
-  - name: print mysql connection info
+  - name: print mysql info output
     ansible.builtin.debug:
       msg: "{{ mysql_info }}"
 
-  - name: set root password
-    ansible.builtin.command: "mysql_secure_installation --set-root-pass ExpenseApp@1"
+  - name: setup root password
+    ansible.builtin.command: "mysql_secure_installation --set-root-pass {{ myql_root_password }}"
     when: mysql_info.failed == true
     
