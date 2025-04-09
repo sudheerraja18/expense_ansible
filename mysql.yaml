@@ -5,7 +5,7 @@
   - name: install python packages
     ansible.builtin.pip:
       name: "{{ item }}"
-      executable: 3.9
+      executable: pip3.9
     loop:
     - PyMySQL
 
