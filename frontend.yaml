@@ -28,8 +28,18 @@
       url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
       dest: /tmp/frontend.zip
 
-  - name:  unzip front code
+  - name: unzip front code
     ansible.builtin.unarchive:
       src: /tmp/frontend.zip
       dest: /usr/share/nginx/html
       remote_src: yes
+
+  - name: copy conf file
+    ansible.builtin.copy:
+      src: expense.conf
+      dest: /etc/nginx/default.d/expense.conf
+
+  - name: restart nginx service
+    ansible.builtin.service:
+      name: nginx
+      state: restarted
