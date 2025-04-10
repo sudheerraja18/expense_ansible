@@ -45,6 +45,13 @@
       src: backend.service
       dest: /etc/systemd/system/backend.service
 
+  - name: install python packages
+    ansible.builtin.pip:
+      name: "{{ item }}"
+      executable: pip.9
+    loop:
+    - PyMySQL
+
   - name: import mysql db 
     community.mysql.mysql_db:
       login_user: root
