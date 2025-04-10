@@ -16,11 +16,11 @@
     - nodejs
     - mysql
 
-  - name: create user
+  - name: create expense user
     ansible.builtin.user:
       name: expense
 
-  - name: create directory
+  - name: create app directory
     ansible.builtin.file:
       path: /app
       state: directory
@@ -36,7 +36,7 @@
       dest: /app
       remote_src: yes
 
-  - name: install npn dependencies
+  - name: install dependencies
     community.general.npm:
       path: /app
 
@@ -45,7 +45,7 @@
       src: backend.service
       dest: /etc/systemd/system/backend.service
 
-  - name: install python packages
+  - name: install python libs
     ansible.builtin.pip:
       name: "{{ item }}"
       executable: pip3.9
@@ -62,9 +62,9 @@
       name: all
       target: /app/schema/backend.sql
 
-  - name: reload daemon
+  - name: daemon reload and restart service
     ansible.builtin.systemd_service:
-      state: started
-      enabled: yes
+      enabled: true
+      state: restarted
       daemon_reload: true
       name: backend
